@@ -1,0 +1,4 @@
+Manifest-Version: 0.9.1
+Main-Class: ch.itec.koppler.niagara.ElionaKoppler
+Created-By: Leicom Itec AG, csa <christian.stauffer@itec-products.ch>
+

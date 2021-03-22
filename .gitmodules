@@ -1,0 +1,3 @@
+[submodule "niagara/javaHttps/thirdparty/json-simple"]
+	path = niagara/javaHttps/thirdparty/json-simple
+	url = https://github.com/fangyidong/json-simple.git
