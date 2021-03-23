@@ -66,6 +66,15 @@ public class Logger {
         PrintLogMessage(this.logRegio, "DEBUG", message);
     }
 
+    public void Debug(String message, Object ... arguments)
+    {
+        if(!MatchLoglevel(LOGLEVEL_DEBUG))
+        {
+            return;
+        }
+        PrintLogMessage(this.logRegio, "DEBUG", String.format(message, arguments));
+    }
+
     public void Info(String message)
     {
         if(!MatchLoglevel(LOGLEVEL_INFO))
@@ -73,6 +82,15 @@ public class Logger {
             return;
         }
         PrintLogMessage(this.logRegio, "INFO", message);
+    }
+
+    public void Info(String message, Object ... arguments)
+    {
+        if(!MatchLoglevel(LOGLEVEL_INFO))
+        {
+            return;
+        }
+        PrintLogMessage(this.logRegio, "INFO", String.format(message, arguments));
     }
 
     public void Warning(String message)
@@ -84,6 +102,15 @@ public class Logger {
         PrintLogMessage(this.logRegio, "WARNING", message);
     }
 
+    public void Warning(String message, Object ... arguments)
+    {
+        if(!MatchLoglevel(LOGLEVEL_WARNING))
+        {
+            return;
+        }
+        PrintLogMessage(this.logRegio, "WARNING", String.format(message, arguments));
+    }
+
     public void Error(String message)
     {
         if(!MatchLoglevel(LOGLEVEL_ERROR))
@@ -91,6 +118,15 @@ public class Logger {
             return;
         }
         PrintLogMessage(this.logRegio, "ERROR", message);
+    }
+
+    public void Error(String message, Object ... arguments)
+    {
+        if(!MatchLoglevel(LOGLEVEL_ERROR))
+        {
+            return;
+        }
+        PrintLogMessage(this.logRegio, "ERROR", String.format(message, arguments));
     }
 
     private void PrintLogMessage(String logRegion, String logLevel, String logMessage)

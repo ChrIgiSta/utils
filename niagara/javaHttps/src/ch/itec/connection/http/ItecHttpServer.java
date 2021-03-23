@@ -167,7 +167,7 @@ public class ItecHttpServer {
                 this.secServer.start();
             }
 
-            this.logger.Info("".format("server started and listening on port %s", this.config.localPort));
+            this.logger.Info("server started and listening on port %s", this.config.localPort);
         }
         catch(NullPointerException npEx)
         {
@@ -195,7 +195,7 @@ public class ItecHttpServer {
             {
                 this.logger.Info("try load keystore from jar package");
                 // try to read keystore from package path
-                Properties properties = new Properties();
+                // Properties properties = new Properties();
                 InputStream keyStoreInputStream = getClass().getClassLoader().getResourceAsStream(keyStorePath);
                 if(keyStoreInputStream == null)
                 {
@@ -235,7 +235,7 @@ public class ItecHttpServer {
         catch(Exception ex)
         {
             httpsConfig = null;
-            this.logger.Error("".format("while creating https configuration: %s", ex.toString()));
+            this.logger.Error("while creating https configuration: %s", ex.toString());
         }
 
         return httpsConfig;
@@ -275,7 +275,7 @@ public class ItecHttpServer {
             }
             catch (Exception ex)
             {
-                this.logger.Error("".format("cannot process key check. %s", ex.toString()));
+                this.logger.Error("cannot process key check. %s", ex.toString());
             }
 
             return authorized;
@@ -395,8 +395,10 @@ public class ItecHttpServer {
         this.logger.Info("http server stopped");
     }
 
-    public class ServerShutdownException extends Exception
+    public static class ServerShutdownException extends Exception
     {
+        static final long serialVersionUID = 1;
+
         public ServerShutdownException(String errorMessage)
         {
             super(errorMessage);

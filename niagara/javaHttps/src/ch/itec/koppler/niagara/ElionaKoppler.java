@@ -60,7 +60,8 @@ public class ElionaKoppler
     static String  KEY_STORE_PASSWORD     = "N1agArA.Eli0na";
     static String  API_KEY_MD5            = "51d53c2b5466e1917fec70727ba8c529";
 
-    static boolean RESTART_BY_ERROR       = true;
+    static boolean RESTART_BY_ERROR = true;
+    static int     RESTART_INTERVAL = 5;
 
     // private vars
     private Logger                      logger;
@@ -109,6 +110,7 @@ public class ElionaKoppler
         }
         catch (ItecHttpServer.ServerShutdownException shEx)
         {
+            this.logger.Error(shEx.toString());
             this.interrupted = true;
         }
 
@@ -119,14 +121,14 @@ public class ElionaKoppler
             try
             {
                 String newJsonInput = bodys.remove();
-                this.logger.Info("".format("A new message received: %s", newJsonInput));
+                this.logger.Info("a new message received: %s", newJsonInput);
 
                 device.setJson(newJsonInput);
                 boolean parseResult = device.parseJson();
 
                 if(parseResult)
                 {
-                    this.logger.Debug("".format("json parsed > device: %s, value: %f", device.deviceId, device.value));
+                    this.logger.Debug("json parsed > device: %s, value: %f", device.deviceId, device.value);
                     this.lastId    = device.deviceId;
                     this.lastValue = device.value;
                 }
@@ -163,7 +165,7 @@ public class ElionaKoppler
 
         if(RESTART_BY_ERROR)
         {
-            waitForRestart = 5;
+            waitForRestart = RESTART_INTERVAL;
         }
 
         do
