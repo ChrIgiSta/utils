@@ -39,6 +39,9 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.Queue;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -76,6 +79,8 @@ public class ItecHttpServer {
 
     public static final String HTTP_REQUEST_TYPE = "POST";
 
+    private static final int NUM_OF_THREADS = 10; // max allowed paralell connections
+
     public static class serverConfig {
         public int     localPort;
         public String  listenIp;
@@ -97,6 +102,8 @@ public class ItecHttpServer {
     private HttpsServer       secServer;
 
     private boolean initialized = false;
+
+    private ExecutorService threadPool;
 
     public ItecHttpServer(serverConfig config, Queue<String> messageQueue)
     {
@@ -154,16 +161,18 @@ public class ItecHttpServer {
                 throw new NullPointerException("Server not or not correctly initialized.");
             }
 
+            this.threadPool = Executors.newFixedThreadPool(NUM_OF_THREADS);
+
             if(!this.config.useSsl)
             {
                 this.server.createContext(this.upstreamPath, new ItecNiagaraHandler(this.queue, this.config.md5SumApiKey));
-                this.server.setExecutor(null);
+                this.server.setExecutor(this.threadPool);
                 this.server.start();
             }
             else
             {
                 this.secServer.createContext(this.upstreamPath, new ItecNiagaraHandler(this.queue, this.config.md5SumApiKey));
-                this.secServer.setExecutor(null);
+                this.secServer.setExecutor(this.threadPool);
                 this.secServer.start();
             }
 
@@ -387,6 +396,14 @@ public class ItecHttpServer {
         try 
         {
             this.secServer.stop(0);
+        }
+        catch (NullPointerException np)
+        {
+            // ok
+        }
+        try
+        {
+            this.threadPool.shutdownNow();
         }
         catch (NullPointerException np)
         {
